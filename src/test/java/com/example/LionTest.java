@@ -15,43 +15,47 @@ import static org.mockito.Mockito.*;
 public class LionTest {
 
     @Mock
-    private Predator predatorMock;
+    private Feline felineMock;
     private Lion lionMale;
     private Lion lionFemale;
 
     @BeforeEach
     void setUp() throws Exception {
-        lionMale = new Lion("Самец", predatorMock);
-        lionFemale = new Lion("Самка", predatorMock);
+        lionMale = new Lion("Самец", felineMock);
+        lionFemale = new Lion("Самка", felineMock);
     }
 
     @Test
-    void testDoesHaveMane() {
+    void testDoesHaveManeTrue() {
         assertTrue(lionMale.doesHaveMane());
+    }
+
+    @Test
+    void testDoesHaveManeFalse() {
         assertFalse(lionFemale.doesHaveMane());
     }
 
     @Test
     void testGetKittens() {
-        when(predatorMock.getKittens()).thenReturn(1);
+        when(felineMock.getKittens()).thenReturn(1);
         assertEquals(1, lionMale.getKittens());
         assertEquals(1, lionFemale.getKittens());
-        verify(predatorMock, times(2)).getKittens();
+        verify(felineMock, times(2)).getKittens();
     }
 
     @Test
     void testGetFood() throws Exception {
         List<String> food = List.of("Животные");
-        when(predatorMock.eatMeat()).thenReturn(food);
+        when(felineMock.eatMeat()).thenReturn(food);
         List<String> result = lionMale.getFood();
         assertEquals(food, result);
-        verify(predatorMock, times(1)).eatMeat();
+        verify(felineMock, times(1)).eatMeat();
     }
 
     @Test
     void testInvalidSexThrowsException() {
         Exception exception = assertThrows(Exception.class, () -> {
-            new Lion("Оно", predatorMock);
+            new Lion("Оно", felineMock);
         });
         assertEquals("Используйте допустимые значения пола животного - самец или самка",
                 exception.getMessage());
